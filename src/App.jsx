@@ -87,18 +87,21 @@ export default function LiturgyMapper() {
                 <line x1="0" y1="200" x2="400" y2="200" stroke="#334155" strokeWidth="2" />
 
                 {/* Axis Labels */}
-                <text x="40" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">FAITH</text>
-                <text x="65" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Story of God)</text>
-                <text x="242" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">PRAISE</text>
-                <text x="242" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Awe)</text>
-                <text x="40" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">HOPE</text>
-                <text x="65" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Confession)</text>
-                <text x="238" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">LOVE</text>
-                <text x="288" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Gospel and Sacrifice)</text>
+                <text x="35" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">FAITH</text>
+                <text x="60" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Story of God)</text>
+                
+                <text x="235" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[ 18px]">PRAISE</text>
+                <text x="236" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Awe)</text>
+                
+                <text x="35" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">HOPE</text>
+                <text x="60" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Confession)</text>
+                
+                <text x="235" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">LOVE</text>
+                <text x="285" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Gospel and Sacrifice)</text>
 
-                {/* <text x="200" y="390" textAnchor="middle" className="fill-slate-400 font-bold text-[10px]">THE HUMAN (-10)</text>
-                <text x="20" y="200" textAnchor="middle" transform="rotate(-90 20,200)" className="fill-slate-400 font-bold text-[10px]">INTERNAL (-10)</text>
-                <text x="380" y="200" textAnchor="middle" transform="rotate(90 380,200)" className="fill-slate-400 font-bold text-[10px]">EXTERNAL (+10)</text> */}
+                {/* <text x="200" y="390" textAnchor="middle" className="fill-slate-400 font-bold text-[10px]">THE HUMAN (-10)</text> */}
+                <text x="75" y="195" textAnchor="top" transform="rotate(-90 20,200)" className="fill-slate-400 font-bold text-[10px]">The Divine </text>
+                {/*<text x="380" y="200" textAnchor="middle" transform="rotate(90 380,200)" className="fill-slate-400 font-bold text-[10px]">EXTERNAL (+10)</text> */}
 
                 {/* Plot Point with Pulse */}
                 {plotData && (
