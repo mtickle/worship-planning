@@ -13,6 +13,32 @@ export default function LiturgyMapper() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // 1. Default center coordinates for the inner 400x400 grid
+  let finalX = 200;
+  let finalY = 200;
+
+  if (plotData) {
+    // 2. Calculate the raw map positions
+    finalX = ((plotData.x_axis_score + 10) / 20) * 400;
+    finalY = 400 - ((plotData.y_axis_score + 10) / 20) * 400;
+
+    // 3. NO-FLY ZONE INTERCEPTION LOGIC
+
+    // Protect Top Labels (FAITH & PRAISE) from top-edge clipping
+    if (finalY < 52) {
+      finalY = 52;
+    }
+
+    // Protect Middle Labels (HOPE & LOVE text boxes sitting right below crosshair)
+    if (finalY > 200 && finalY < 246) {
+      finalY = 246; // Push cleanly down into the open quadrant space
+    }
+
+    // Protect Left and Right Outer Edges
+    if (finalX < 20) finalX = 20;
+    if (finalX > 380) finalX = 380;
+  }
+
   useEffect(() => { fetchHistory(); }, []);
 
   const fetchHistory = async () => {
@@ -78,13 +104,27 @@ export default function LiturgyMapper() {
                 <text x="220" y="430" textAnchor="middle" className="fill-slate-500 font-bold text-xs tracking-widest">THE HUMAN (-10)</text> */}
 
 
-                <text x="115" y="220" textAnchor="middle" textRendering="geometricPrecision" transform="rotate(-90 15,220)" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">THE DIVINE</text>
-                <text x="-80" y="220" textAnchor="middle" transform="rotate(-90 15,220)" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">THE HUMAN</text>
-                {/* <text x="425" y="220" textAnchor="middle" transform="rotate(90 425,220)" className="fill-slate-500 font-bold text-xs tracking-widest">EXTERNAL (+10)</text> */}
+                {/* Y AXIS LABELS */}
+                <text x="115" y="220" textAnchor="middle" textRendering="geometricPrecision" transform="rotate(-90 15,220)" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">DIVINE</text>
+                <text x="10" y="220" textAnchor="middle" textRendering="geometricPrecision" transform="rotate(-90 15,220)" className="fill-slate-800 font-sans font-bold text-[12px] tracking-normal uppercase select-none">THE CONNECTION</text>
+                <text x="-90" y="220" textAnchor="middle" textRendering="geometricPrecision" transform="rotate(-90 15,220)" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">HUMAN</text>
+
+                {/* X AXIS LABELS */}
+                <text x="100" y="433" textAnchor="middle" textRendering="geometricPrecision" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">
+                  RECEIVING
+                </text>
+
+                <text x="220" y="433" textAnchor="middle" textRendering="geometricPrecision" className="fill-slate-800 font-sans font-bold text-[12px] tracking-normal uppercase select-none">
+                  THE EXPRESSION
+                </text>
+
+                <text x="340" y="433" textAnchor="middle" textRendering="geometricPrecision" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">
+                  DECLARING
+                </text>
 
                 {/* Main Grid Group (Shifted by 20px gutter) */}
                 <g transform="translate(20, 20)">
-                  <rect x="0" y="0" width="400" height="400" fill="transparent" stroke="#e2e8f0" strokeWidth="2" />
+                  <rect x="0" y="0" width="400" height="400" fill="transparent" stroke="#334155" strokeWidth="2" />
                   {/* Background Quadrants */}
                   <rect x="0" y="0" width="200" height="200" fill="#f8fafc" />
                   <rect x="200" y="0" width="200" height="200" fill="#fefce8" />
@@ -113,7 +153,7 @@ export default function LiturgyMapper() {
 
                   {/* Plot Point (Remapped to 400x400 grid inside the 20px gutter) */}
                   {plotData && (
-                    <g transform={`translate(${((plotData.x_axis_score + 10) / 20) * 400}, ${400 - ((plotData.y_axis_score + 10) / 20) * 400})`}>
+                    <g transform={`translate(${finalX}, ${finalY})`}>
                       <circle cx="0" cy="0" r="6" className="fill-blue-400 stroke-white stroke-[3px]" />
                       <circle cx="0" cy="0" r="8" className="fill-blue-600 opacity-30 animate-ping" />
                     </g>
