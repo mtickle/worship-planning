@@ -235,19 +235,22 @@ export default function LiturgyMapper() {
               {/* Axes Definition */}
 
               <h4 className="font-bold text-slate-800 text-md uppercase tracking-wider mb-1">Focus (Y-Axis)</h4>
-              <p className="text-md text-slate-600"><strong>Divine (+10)</strong> vs. <strong>Human (-10)</strong>.<br />Are we focusing on God's attributes or our condition? God's attributes land higher in the grid, while our condition lies lower.</p>
+              <p className="text-md text-slate-600"><strong>Divine</strong> vs. <strong>Human</strong>:<br />
+                Are we focusing on God's attributes or our condition?
+                God's attributes land higher in the grid, while our human condition lies lower.</p>
 
 
 
-              <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider mb-1">Posture (X-Axis)</h4>
-              <p className="text-xs text-slate-500"><strong>External (+10)</strong> vs. <strong>Internal (-10)</strong>.<br />Is the song a public declaration or a quiet meditation?</p>
+              <h4 className="font-bold text-slate-800 text-md uppercase tracking-wider mb-1">Posture (X-Axis)</h4>
+              <p className="text-md text-slate-500"><strong>External</strong> vs. <strong>Internal</strong>:<br />
+                Is the song a public declaration or a quiet meditation?</p>
 
 
 
               {/* Quadrant Definitions */}
               <div className="space-y-3">
-                <h4 className="font-bold text-slate-800 text-sm">The Quadrants</h4>
-                <div className="space-y-2 text-xs">
+                <h4 className="font-bold text-slate-800 text-md">The Quadrants</h4>
+                <div className="space-y-2 text-md">
                   <p><strong className="text-blue-600">Q1: FAITH</strong> – <em>The Story of God.</em> Telling the biblical narrative of who He is and what He has done.</p>
                   <p><strong className="text-yellow-600">Q2: PRAISE</strong> – <em>The Awe of God.</em> Active, external response to His majesty and holiness.</p>
                   <p><strong className="text-slate-600">Q3: HOPE</strong> – <em>The Confession.</em> Reflecting on our need, our weakness, and our dependence on Him.</p>
