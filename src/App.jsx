@@ -68,54 +68,57 @@ export default function LiturgyMapper() {
 
           <div className="w-full lg:w-3/5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <div className="relative w-full aspect-square bg-slate-50 border-2 border-slate-800 rounded-lg overflow-hidden">
-              <svg viewBox="0 0 400 400" className="w-full h-full">
+              {/* viewBox is now 440x440 to accommodate 20px gutters */}
+              <svg viewBox="0 0 440 440" className="w-full h-full">
 
-                {/* Background Quadrants */}
-                <rect x="0" y="0" width="200" height="200" fill="#f8fafc" />
-                <rect x="200" y="0" width="200" height="200" fill="#fefce8" />
-                <rect x="0" y="200" width="200" height="200" fill="#f1f5f9" />
-                <rect x="200" y="200" width="200" height="200" fill="#fef2f2" />
+                {/* Outer Border / Margin Area Labels (Centered for 440x440) */}
 
-                {/* Quadrant Labels */}
-                <text x="100" y="100" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q1</text>
-                <text x="300" y="100" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q2</text>
-                <text x="100" y="300" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q3</text>
-                <text x="300" y="300" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q4</text>
+                {/* <text x="80" y="15" textAnchor="middle" className="fill-slate-500 font-bold text-xs tracking-wider">THE DIVINE (+10)</text>
+                <text x="290" y="15" textAnchor="middle" className="fill-slate-500 font-bold text-xs tracking-widest">THE DIVINE (+20)</text>
+                <text x="220" y="430" textAnchor="middle" className="fill-slate-500 font-bold text-xs tracking-widest">THE HUMAN (-10)</text> */}
 
-                {/* Axis Lines */}
-                <line x1="200" y1="0" x2="200" y2="400" stroke="#334155" strokeWidth="2" />
-                <line x1="0" y1="200" x2="400" y2="200" stroke="#334155" strokeWidth="2" />
 
-                {/* Axis Labels */}
-                <text x="35" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">FAITH</text>
-                <text x="60" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Story of God)</text>
-                
-                <text x="235" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[ 18px]">PRAISE</text>
-                <text x="236" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Awe)</text>
-                
-                <text x="35" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">HOPE</text>
-                <text x="60" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Confession)</text>
-                
-                <text x="235" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">LOVE</text>
-                <text x="285" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Gospel and Sacrifice)</text>
+                <text x="115" y="220" textAnchor="middle" textRendering="geometricPrecision" transform="rotate(-90 15,220)" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">THE DIVINE</text>
+                <text x="-80" y="220" textAnchor="middle" transform="rotate(-90 15,220)" className="fill-slate-500 font-sans font-bold text-[10px] tracking-widest uppercase select-none">THE HUMAN</text>
+                {/* <text x="425" y="220" textAnchor="middle" transform="rotate(90 425,220)" className="fill-slate-500 font-bold text-xs tracking-widest">EXTERNAL (+10)</text> */}
 
-                {/* <text x="200" y="390" textAnchor="middle" className="fill-slate-400 font-bold text-[10px]">THE HUMAN (-10)</text> */}
-                <text x="75" y="195" textAnchor="top" transform="rotate(-90 20,200)" className="fill-slate-400 font-bold text-[10px]">The Divine </text>
-                {/*<text x="380" y="200" textAnchor="middle" transform="rotate(90 380,200)" className="fill-slate-400 font-bold text-[10px]">EXTERNAL (+10)</text> */}
+                {/* Main Grid Group (Shifted by 20px gutter) */}
+                <g transform="translate(20, 20)">
+                  <rect x="0" y="0" width="400" height="400" fill="transparent" stroke="#e2e8f0" strokeWidth="2" />
+                  {/* Background Quadrants */}
+                  <rect x="0" y="0" width="200" height="200" fill="#f8fafc" />
+                  <rect x="200" y="0" width="200" height="200" fill="#fefce8" />
+                  <rect x="0" y="200" width="200" height="200" fill="#f1f5f9" />
+                  <rect x="200" y="200" width="200" height="200" fill="#fef2f2" />
 
-                {/* Plot Point with Pulse */}
-                {plotData && (
-                  <g transform={`translate(${
-                    // X-Axis Mapping: Scale to 370px width, then shift right by 15px
-                    15 + (((plotData.x_axis_score + 10) / 20) * 370)
-                    }, ${
-                    // Y-Axis Mapping: Scale to 310px height, flip it, then shift down by 45px
-                    45 + (310 - (((plotData.y_axis_score + 10) / 20) * 310))
-                    })`}>
-                    <circle cx="0" cy="0" r="6" className="fill-blue-400 stroke-white stroke-[3px]" />
-                    <circle cx="0" cy="0" r="8" className="fill-blue-600 opacity-30 animate-ping" />
-                  </g>
-                )}
+                  {/* Chunky Quadrant Labels */}
+                  <text x="100" y="100" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q1</text>
+                  <text x="300" y="100" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q2</text>
+                  <text x="100" y="300" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q3</text>
+                  <text x="300" y="300" textAnchor="middle" className="fill-slate-200 font-black text-4xl select-none">Q4</text>
+
+                  {/* Axis Lines */}
+                  <line x1="200" y1="0" x2="200" y2="400" stroke="#334155" strokeWidth="2" />
+                  <line x1="0" y1="200" x2="400" y2="200" stroke="#334155" strokeWidth="2" />
+
+                  {/* Quadrant Labels (Text) */}
+                  <text x="40" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">FAITH</text>
+                  <text x="65" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Story of God)</text>
+                  <text x="242" y="24" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">PRAISE</text>
+                  <text x="242" y="38" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Awe)</text>
+                  <text x="40" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">HOPE</text>
+                  <text x="65" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Confession)</text>
+                  <text x="238" y="224" textAnchor="middle" className="fill-slate-900 font-bold text-[18px]">LOVE</text>
+                  <text x="288" y="238" textAnchor="middle" className="fill-slate-900 font-bold text-[12px]">(The Gospel & Sacrifice)</text>
+
+                  {/* Plot Point (Remapped to 400x400 grid inside the 20px gutter) */}
+                  {plotData && (
+                    <g transform={`translate(${((plotData.x_axis_score + 10) / 20) * 400}, ${400 - ((plotData.y_axis_score + 10) / 20) * 400})`}>
+                      <circle cx="0" cy="0" r="6" className="fill-blue-400 stroke-white stroke-[3px]" />
+                      <circle cx="0" cy="0" r="8" className="fill-blue-600 opacity-30 animate-ping" />
+                    </g>
+                  )}
+                </g>
               </svg>
             </div>
           </div>
