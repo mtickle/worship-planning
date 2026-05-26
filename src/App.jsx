@@ -18,21 +18,24 @@ export default function LiturgyMapper() {
   let finalY = 200;
 
   if (plotData) {
+    // FORCE NUMBER CONVERSION to prevent JavaScript string bugs!
+    const xScore = Number(plotData.x_axis_score);
+    const yScore = Number(plotData.y_axis_score);
+
     // 2. Calculate the raw map positions
-    finalX = ((plotData.x_axis_score + 10) / 20) * 400;
-    finalY = 400 - ((plotData.y_axis_score + 10) / 20) * 400;
+    finalX = ((xScore + 10) / 20) * 400;
+    finalY = 400 - ((yScore + 10) / 20) * 400;
 
     // 3. NO-FLY ZONE INTERCEPTION LOGIC
 
     // Protect Top Labels (FAITH & PRAISE) from top-edge clipping
-    if (finalY < 52) {
-      finalY = 52;
-    }
+    if (finalY < 52) finalY = 52;
 
     // Protect Middle Labels (HOPE & LOVE text boxes sitting right below crosshair)
-    if (finalY > 200 && finalY < 246) {
-      finalY = 246; // Push cleanly down into the open quadrant space
-    }
+    if (finalY > 200 && finalY < 246) finalY = 246;
+
+    // NEW: Protect Bottom Edge from clipping
+    if (finalY > 380) finalY = 380;
 
     // Protect Left and Right Outer Edges
     if (finalX < 20) finalX = 20;
