@@ -1,41 +1,36 @@
+import { ColumnData } from '@data/ColumnData';
+
 export default function Columns() {
-    const columns = [
-        { name: "Praise", movement: "Gathering", message: "The Awe", color: "border-t-blue-300", imagePath: "/quadrants/images/praise_pro.png" },
-        { name: "Faith", movement: "Word", message: "The Story of God", color: "border-t-blue-500", imagePath: "/quadrants/images/faith_pro.png" },
-        { name: "Love", movement: "Table", message: "The Gospel & Sacrifice", color: "border-t-blue-700", imagePath: "/quadrants/images/love_pro.png" },
-        { name: "Hope", movement: "Sending", message: "The Confession", color: "border-t-blue-900", imagePath: "/quadrants/images/hope_pro.png" },
-    ];
+
+
 
     return (
         <div className="flex gap-6 p-8 bg-slate-50 ">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {columns.map((q) => (
-                    <div key={q.name} className={`bg-white rounded-2xl shadow-sm border-t-4 ${q.color} flex flex-col min-h-[500px]`}>
+                {ColumnData.map((q) => (
+                    <div key={q.name} className={`bg-white overflow-hidden border-slate-500 rounded-2xl shadow-sm border-l border-r border-t-4 ${q.color} flex flex-col min-h-[500px]`}>
 
                         {/* Header Section */}
-                        <div className="p-6 border-b border-slate-100">
-                            <h2 className="text-2xl font-black text-slate-800 tracking-tight">{q.name}</h2>
+                        <div className="p-4 border-b border-slate-500 bg-slate-200">
+                            <h2 className="text-2xl font-black text-slate-800 ">{q.name}</h2>
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{q.movement}</p>
                         </div>
 
-                        {/* Middle Content: Where the service building happens */}
-                        <div className="p-6 flex-1 flex flex-col">
-                            <p className="text-sm font-bold text-slate-500 mb-4">{q.message}</p>
-
-                            {/* The "Service Slot" - This will hold your future song components */}
-                            {/* <div className="border-2 border-dashed border-slate-200 rounded-xl flex-1 flex items-center justify-center bg-slate-50/30 hover:bg-slate-50 transition-colors">
-                                <span className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Add Content</span>
-                            </div> */}
+                        <div className="pt-2 pb-2 pl-4 border-b bg-slate-100">
+                            <p className="text-sm font-bold text-slate-500">{q.message}</p>
+                        </div>
+                        <div className="p-4 flex-1 flex flex-col">
+                            <p className="text-sm text-slate-500 mb-4">{q.narrative.join(" ")}</p>
                         </div>
 
                         {/* Bottom Graphic Section */}
-                        <div className="w-full pt-4 flex justify-center bg-slate-50/30 rounded-b-2xl overflow-hidden">
+                        {/* <div className="w-full pt-4 flex justify-center bg-slate-50/30 rounded-b-2xl overflow-hidden">
                             <img
                                 src={q.imagePath}
                                 alt={`${q.movement} illustration`}
                                 className="w-full h-full object-contain object-bottom"
                             />
-                        </div>
+                        </div> */}
                     </div>
                 ))}
             </div>

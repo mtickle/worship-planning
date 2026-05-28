@@ -156,50 +156,7 @@ export default function LiturgyMapper() {
             </div>
           </div>
 
-          {/* Right Column: How This Works (Aligns under Narrative) */}
-          <div className="w-full lg:w-2/5 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
-            <h3 className="text-xl font-bold text-slate-800 mb-4">How This Works</h3>
-            <p className="text-slate-600 mb-6 leading-relaxed text-md">
-              We map worship songs using two liturgical axes to visualize the <strong>emotional and theological arc</strong> of our service. This helps us ensure our setlists are balanced, biblically-rooted, and moving the congregation through the four pillars of worship.
-            </p>
 
-            <blockquote className="mb-6 border-l-4 border-slate-300 bg-slate-50 pl-4 py-3 italic text-slate-600 text-sm rounded-r-lg">
-              <span className="font-semibold text-slate-500 block">Geography Reminder:</span>
-              The Y axis is vertical. It goes up and down, north and south.
-              The X axis is horizontal. It goes left and right, east and west.
-            </blockquote>
-
-            <div className="space-y-6">
-              {/* Axes Definition */}
-
-              <h4 className="font-bold text-slate-800 text-md uppercase tracking-wider mb-1">Focus (Y-Axis)</h4>
-              <p className="text-md text-slate-600"><strong>Divine</strong> vs. <strong>Human</strong>:<br />
-                Are we focusing on God's attributes or our condition?
-                God's attributes land higher in the grid, while our human condition lies lower.</p>
-
-
-
-              <h4 className="font-bold text-slate-800 text-md uppercase tracking-wider mb-1">Posture (X-Axis)</h4>
-              <p className="text-md text-slate-500"><strong>External</strong> vs. <strong>Internal</strong>:<br />
-                Is the song a public declaration or a quiet meditation?</p>
-
-
-
-              {/* Quadrant Definitions */}
-              <div className="space-y-3">
-                <h4 className="font-bold text-slate-800 text-md">The Quadrants</h4>
-                <div className="space-y-2 text-md">
-                  <p><strong className="text-blue-600">Q1: FAITH</strong> – <em>The Story of God.</em> Telling the biblical narrative of who He is and what He has done.</p>
-                  <p><strong className="text-yellow-600">Q2: PRAISE</strong> – <em>The Awe of God.</em> Active, external response to His majesty and holiness.</p>
-                  <p><strong className="text-slate-600">Q3: HOPE</strong> – <em>The Confession.</em> Reflecting on our need, our weakness, and our dependence on Him.</p>
-                  <p><strong className="text-red-600">Q4: LOVE</strong> – <em>The Gospel.</em> Pointing back to the Cross and the victory of Christ’s sacrifice.</p>
-                </div>
-              </div>
-            </div>
-
-
-
-          </div>
 
         </div>
 
