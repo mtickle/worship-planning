@@ -19,7 +19,18 @@ export default function Columns() {
                         <div className="pt-2 pb-2 pl-4 border-b bg-slate-100">
                             <p className="text-sm font-bold text-slate-500">{q.message}</p>
                         </div>
-                        <div className="p-4 flex-1 flex flex-col">
+
+                        <div className="pt-2 pl-4 border-b">
+                            <ul className="space-y-2 mb-4">
+                                {q.items && q.items.map((item, index) => (
+                                    <li key={index} className="flex items-start text-sm text-slate-500">
+                                        <span className="mr-2 mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="p-4 pt-2 flex-1 flex flex-col">
                             <p className="text-sm text-slate-500 mb-4">{q.narrative.join(" ")}</p>
                         </div>
 

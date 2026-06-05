@@ -5,6 +5,7 @@ export const ColumnData = [
         "message": "The Awe",
         "color": "border-t-blue-300",
         "imagePath": "/quadrants/images/praise_pro.png",
+        "items": ["Anchor the mind in Biblical narrative.", "Welcome & Greeting", "Opening Hymn"],
         "narrative": [
             "The focus is entirely upward on the Divine, in a state of ",
             "active declaration.The congregation, filled with AWE, actively reflects God's glory back to Him. ",
