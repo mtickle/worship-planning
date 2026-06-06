@@ -1,16 +1,59 @@
-# React + Vite
+# Worship Planning Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository serves as a theological guide for our worship planning. Instead of a complex diagnostic tool, we utilize a **four-column framework** that maps the historic "Four-Fold" liturgical structure to four pillars of worship derived from 1 Corinthians 13.
 
-Currently, two official plugins are available:
+Our goal is to ensure our worship services are theologically balanced, narratively driven, and focused on the "Bride of Christ" relationship with God.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## The Four-Column Framework
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+A perfect service doesn't need to be perfectly symmetrical, but it should be structurally sound. Think of these four columns as the legs of a table—if one is missing or too short, the service will "tip."
 
-## Expanding the ESLint configuration
+| Column | Liturgical Action | Theological Pillar | Primary Goal |
+| :--- | :--- | :--- | :--- |
+| **1. Gathering** | **PRAISE** | Awe | Acknowledge God’s presence & worth |
+| **2. Word** | **FAITH** | Truth | Teach, inform, and ground in Scripture |
+| **3. Table** | **LOVE** | Sacrifice | Meditate on the Gospel & Cross |
+| **4. Sending** | **HOPE** | Commission | Mobilize the Church for the world |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## How to Use This Guide
+
+This guide is not a rigid script; it is a **compass**. When planning a service, use these pillars to audit your flow:
+
+### 1. The "Leg" Diagnostic
+Ask your team: *"Are all four legs of our table stable today?"*
+* **Missing Praise?** The service may feel routine or mechanical. We’ve forgotten to look up.
+* **Missing Faith?** The service may be emotionally stirring but intellectually shallow. We are singing *about* God, but not learning *from* His Word.
+* **Missing Love?** The service may feel academic or purely performance-based. We are missing the "why" (the sacrifice/gospel) that saves us.
+* **Missing Hope?** The service may feel trapped in the room. We’ve enjoyed the presence of God but haven’t been equipped to take it into the world.
+
+### 2. The Theological "Seams"
+The most vital moments in a service are the transitions between these columns. Focus your planning on the "seams" where the theology connects:
+* **Praise → Faith:** Moving from *admiring* God to *listening* to Him.
+* **Faith → Love:** Moving from *knowing* His Word to *meditating* on His sacrifice.
+* **Love → Hope:** Moving from *reflecting* on the Cross to *being sent* into the world.
+
+### 3. The "Bride of Christ" Lens
+We view our worship through the lens of a relationship, not just an event:
+* **Praise** is courtship (giving glory).
+* **Faith** is communication (listening to the Beloved).
+* **Love** is commitment (remembering the sacrifice/vows).
+* **Hope** is the future (living with the Beloved’s promise).
+
+---
+
+## Resources & Foundations
+
+This framework is built upon the following historical and theological influences:
+
+* **1 Corinthians 13:** The virtues of "Faith, Hope, and Love" as the core of our relational worship.
+* **The Four-Fold Pattern (Gathering, Word, Table, Sending):** Popularized by theologians like Robert Webber and Constance Cherry; rooted in the early Christian church and the Emmaus Road narrative (Luke 24).
+* **Revelation:** A blueprint for how earthly worship participates in cosmic, heavenly reality (supported by the work of G.K. Beale and Scott Hahn).
+
+---
+
+## License
+*This guide is maintained for internal use to assist in worship renewal and planning.*
