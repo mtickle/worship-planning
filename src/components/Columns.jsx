@@ -14,13 +14,15 @@ export default function Columns() {
                         <div className="p-4 border-b border-slate-500 bg-slate-200">
                             <h2 className="text-2xl font-black text-slate-800 ">{q.name}</h2>
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{q.movement}</p>
+
                         </div>
 
-                        <div className="pt-2 pb-2 pl-4 border-b bg-slate-100">
+                        <div className="pt-2 pb-2 pl-3 pr-3">
                             <p className="text-sm font-bold text-slate-500">{q.message}</p>
+                             <p className="text-sm text-slate-500 mb-4">{q.narrative.join(" ")}</p>
                         </div>
 
-                        <div className="pt-2 pl-4 border-b">
+                        {/* <div className="pt-2 pl-4 border-b">
                             <ul className="space-y-2 mb-4">
                                 {q.items && q.items.map((item, index) => (
                                     <li key={index} className="flex items-start text-sm text-slate-500">
@@ -29,19 +31,20 @@ export default function Columns() {
                                     </li>
                                 ))}
                             </ul>
-                        </div>
+                        </div> */}
                         <div className="p-4 pt-2 flex-1 flex flex-col">
-                            <p className="text-sm text-slate-500 mb-4">{q.narrative.join(" ")}</p>
+                           
                         </div>
 
                         {/* Bottom Graphic Section */}
-                        {/* <div className="w-full pt-4 flex justify-center bg-slate-50/30 rounded-b-2xl overflow-hidden">
+                        <div className="w-full h-48 pt-4 flex justify-center bg-slate-50/30 rounded-b-2xl overflow-hidden">
                             <img
                                 src={q.imagePath}
                                 alt={`${q.movement} illustration`}
+                                // Removed the crazy scale overrides. Just let object-contain do its job!
                                 className="w-full h-full object-contain object-bottom"
                             />
-                        </div> */}
+                        </div>
                     </div>
                 ))}
             </div>

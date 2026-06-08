@@ -4,7 +4,8 @@ export const ColumnData = [
         "movement": "Gathering",
         "message": "The Awe",
         "color": "border-t-blue-300",
-        "imagePath": "/quadrants/images/praise_pro.png",
+        "imagePath": "/quadrants/images/praise.png",
+        "imageClass": "scale-100",
         "items": ["Anchor the mind in Biblical narrative.", "Welcome & Greeting", "Opening Hymn"],
         "narrative": [
             "The focus is entirely upward on the Divine, in a state of ",
@@ -17,7 +18,8 @@ export const ColumnData = [
         "movement": "Word",
         "message": "The Story of God",
         "color": "border-t-blue-500",
-        "imagePath": "/quadrants/images/faith_pro.png",
+        "imagePath": "/quadrants/images/faith.png",
+        "imageClass": "scale-110 translate-y-2",
         "narrative": [
             "God reaches down to His people, and the congregation positions themselves to listen, learn, and receive. ",
             "By focusing on the biblical Story of God, His character, and His attributes, the congregation receives the ",
@@ -29,7 +31,8 @@ export const ColumnData = [
         "movement": "Table",
         "message": "The Gospel & Sacrifice",
         "color": "border-t-blue-700",
-        "imagePath": "/quadrants/images/love_pro.png",
+        "imagePath": "/quadrants/images/love.png",
+        "imageClass": "scale-[1.35] translate-y-4",
         "narrative": [
             "This is where human need meets the ultimate Divine answer: the cross. By declaring the Gospel and the ",
             "sacrifice of Jesus, the church proclaims the greatest act of LOVE in human history. It relates to the ",
@@ -41,7 +44,8 @@ export const ColumnData = [
         "movement": "Sending",
         "message": "The Confession",
         "color": "border-t-blue-900",
-        "imagePath": "/quadrants/images/hope_pro.png",
+        "imagePath": "/quadrants/images/hope.png",
+        "imageClass": "scale-100",
         "narrative": [
             "By receiving God's grace through the call to repentance, the congregation experiences the profound hope of a renewed life in Christ, ",
             "by reflecting on our need for a savior. ",
