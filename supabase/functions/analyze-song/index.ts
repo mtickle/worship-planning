@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { songInput } = await req.json();
+    const { songTitle, artistName } = await req.json();
     const apiKey = Deno.env.get('GEMINI_API_KEY');
 
     // The system prompt we designed earlier
@@ -37,9 +37,9 @@ OPERATIONAL RULES:
 4. If a song is Declarative (shouting, proclaiming), X MUST be positive.
 
 OUTPUT FORMAT:
-Return ONLY valid JSON.
 {
-  "song_title": "String",
+  "song_title": "${songTitle}",
+  "artist": "${artistName}",
   "x_axis_score": Number,
   "y_axis_score": Number,
   "quadrant": "Q1 | Q2 | Q3 | Q4",

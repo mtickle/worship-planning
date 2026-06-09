@@ -8,6 +8,7 @@ const supabase = createClient(
 );
 
 export default function LiturgyMapper() {
+  const [artistInput, setArtistInput] = useState('');
   const [songInput, setSongInput] = useState('');
   const [plotData, setPlotData] = useState(null);
   const [history, setHistory] = useState([]);
@@ -15,33 +16,33 @@ export default function LiturgyMapper() {
   const [error, setError] = useState(null);
 
   // 1. Default center coordinates for the inner 400x400 grid
-  let finalX = 200;
-  let finalY = 200;
+  // let finalX = 200;
+  // let finalY = 200;
 
-  if (plotData) {
-    // FORCE NUMBER CONVERSION to prevent JavaScript string bugs!
-    const xScore = Number(plotData.x_axis_score);
-    const yScore = Number(plotData.y_axis_score);
+  // if (plotData) {
+  //   // FORCE NUMBER CONVERSION to prevent JavaScript string bugs!
+  //   const xScore = Number(plotData.x_axis_score);
+  //   const yScore = Number(plotData.y_axis_score);
 
-    // 2. Calculate the raw map positions
-    finalX = ((xScore + 10) / 20) * 400;
-    finalY = 400 - ((yScore + 10) / 20) * 400;
+  //   // 2. Calculate the raw map positions
+  //   finalX = ((xScore + 10) / 20) * 400;
+  //   finalY = 400 - ((yScore + 10) / 20) * 400;
 
-    // 3. NO-FLY ZONE INTERCEPTION LOGIC
+  //   // 3. NO-FLY ZONE INTERCEPTION LOGIC
 
-    // Protect Top Labels (FAITH & PRAISE) from top-edge clipping
-    if (finalY < 52) finalY = 52;
+  //   // Protect Top Labels (FAITH & PRAISE) from top-edge clipping
+  //   if (finalY < 52) finalY = 52;
 
-    // Protect Middle Labels (HOPE & LOVE text boxes sitting right below crosshair)
-    if (finalY > 200 && finalY < 246) finalY = 246;
+  //   // Protect Middle Labels (HOPE & LOVE text boxes sitting right below crosshair)
+  //   if (finalY > 200 && finalY < 246) finalY = 246;
 
-    // NEW: Protect Bottom Edge from clipping
-    if (finalY > 380) finalY = 380;
+  //   // NEW: Protect Bottom Edge from clipping
+  //   if (finalY > 380) finalY = 380;
 
-    // Protect Left and Right Outer Edges
-    if (finalX < 20) finalX = 20;
-    if (finalX > 380) finalX = 380;
-  }
+  //   // Protect Left and Right Outer Edges
+  //   if (finalX < 20) finalX = 20;
+  //   if (finalX > 380) finalX = 380;
+  // }
 
   useEffect(() => { fetchHistory(); }, []);
 
@@ -51,14 +52,21 @@ export default function LiturgyMapper() {
   };
 
   const handleAnalyze = async () => {
-    if (!songInput.trim()) return;
+    if (!songInput.trim() || !artistInput.trim()) return; // Added validation
     setLoading(true);
     setError(null);
+
     try {
       const { data: geminiData, error: funcError } = await supabase.functions.invoke('analyze-song', {
-        body: { songInput }
+        // Send both inputs as an object
+        body: {
+          songTitle: songInput,
+          artistName: artistInput
+        }
       });
+
       if (funcError) throw new Error("Failed to analyze song.");
+
       setPlotData(geminiData);
       fetchHistory();
     } catch (err) {
@@ -85,6 +93,13 @@ export default function LiturgyMapper() {
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <input
             type="text"
+            value={artistInput}
+            onChange={(e) => setArtistInput(e.target.value)}
+            placeholder="Enter Artist..."
+            className="flex-1 p-4 border rounded-xl shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
             value={songInput}
             onChange={(e) => setSongInput(e.target.value)}
             placeholder="Enter Song Title..."
@@ -94,25 +109,11 @@ export default function LiturgyMapper() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 mb-12">
-          {/* Magic Quadrant Grid */}
 
           <div className="w-full  bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <Columns />
           </div>
-
-          {/* <div className="w-full lg:w-2/5">
-            {plotData && (
-              <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                <h3 className="text-2xl font-black text-slate-800">{plotData.song_title}</h3>
-                <p className="text-slate-700 mt-4">{plotData.theological_reasoning}</p>
-                <p className="text-slate-700 mt-4">FOCUS: {plotData.x_axis_score}</p>
-                <p className="text-slate-700">POSTURE: {plotData.y_axis_score}</p>
-              </div>
-            )}
-          </div> */}
         </div>
-
-
 
         {/* History Table */}
         {/* Bottom Row: History & Explanation */}
