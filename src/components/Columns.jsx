@@ -19,10 +19,10 @@ export default function Columns() {
 
                         <div className="pt-2 pb-2 pl-3 pr-3">
                             <p className="text-sm font-bold text-slate-500">{q.message}</p>
-                             <p className="text-sm text-slate-500 mb-4">{q.narrative.join(" ")}</p>
+                            <p className="text-sm text-slate-500 mb-4">{q.narrative.join(" ")}</p>
                         </div>
 
-                        {/* <div className="pt-2 pl-4 border-b">
+                        <div className="pt-2 pl-4">
                             <ul className="space-y-2 mb-4">
                                 {q.items && q.items.map((item, index) => (
                                     <li key={index} className="flex items-start text-sm text-slate-500">
@@ -31,13 +31,13 @@ export default function Columns() {
                                     </li>
                                 ))}
                             </ul>
-                        </div> */}
+                        </div>
                         <div className="p-4 pt-2 flex-1 flex flex-col">
-                           
+
                         </div>
 
                         {/* Bottom Graphic Section */}
-                        <div className="w-full h-48 pt-4 flex justify-center bg-slate-50/30 rounded-b-2xl overflow-hidden">
+                        <div className="w-full h-48 border-t-1 pt-4 flex justify-center bg-slate-50/30 rounded-b-2xl overflow-hidden">
                             <img
                                 src={q.imagePath}
                                 alt={`${q.movement} illustration`}
