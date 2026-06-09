@@ -12,57 +12,54 @@ serve(async (req) => {
   }
 
   try {
+    // FIX 1: Extract the variables we actually sent from the frontend
     const { songTitle, artistName } = await req.json();
     const apiKey = Deno.env.get('GEMINI_API_KEY');
 
-    // The system prompt we designed earlier
- const systemInstruction = `
-You are an expert Liturgical Analyst and Worship Theologian.
-Your task is to map songs onto a 2D Cartesian plane (-10 to +10).
+    if (!songTitle || !artistName) {
+      throw new Error("Missing songTitle or artistName");
+    }
 
-AXIS DEFINITIONS:
-- Y-AXIS (FOCUS): +10 is Divine-focused (God's nature, glory). -10 is Human-focused (our condition, repentance, the Cross/Gospel).
-- X-AXIS (POSTURE): -10 is Receiving (listening, reflection). +10 is Declaring (proclaiming, celebration).
+ const systemInstruction = `You are an expert Liturgical Analyst. I will provide a song title and artist. 
+Your goal is to categorize it into one of four liturgical movements and explain its theological fit.
 
-QUADRANT BOUNDARIES (STRICT):
-- Q1 (FAITH): Y > 0 AND X < 0. (Divine + Receiving)
-- Q2 (PRAISE): Y > 0 AND X > 0. (Divine + Declaring)
-- Q3 (HOPE): Y < 0 AND X < 0. (Human + Receiving)
-- Q4 (LOVE): Y < 0 AND X > 0. (Human + Declaring)
+CATEGORIES (The Four-Fold Model):
+1. PRAISE (Gathering): Focus on awe, glory, and thanks. Posture is gathering the congregation.
+2. FAITH (Word): Focus on the story of God, His attributes, and His Word. Posture is learning/grounding.
+3. LOVE (Table): Focus on the Gospel, the Cross, and sacrifice. Posture is reflection/communion.
+4. HOPE (Sending): Focus on the future, confession, repentance, and commissioning. Posture is being sent out.
 
-OPERATIONAL RULES:
-1. BEFORE outputting JSON, perform an internal check: "Does my X and Y satisfy the quadrant math?"
-2. If the song is about the Cross, the Gospel, or Sacrifice, it MUST have a negative Y-axis score.
-3. If the song is about God's eternal attributes (Majesty, Holiness), it MUST have a positive Y-axis score.
-4. If a song is Declarative (shouting, proclaiming), X MUST be positive.
-
-OUTPUT FORMAT:
+OUTPUT FORMAT (JSON ONLY):
 {
-  "song_title": "${songTitle}",
-  "artist": "${artistName}",
-  "x_axis_score": Number,
-  "y_axis_score": Number,
-  "quadrant": "Q1 | Q2 | Q3 | Q4",
-  "theological_reasoning": "String"
+  "song_title": "String",
+  "artist": "String",
+  "liturgical_movement": "Praise | Faith | Love | Hope",
+  "theological_reasoning": "A 2-3 sentence explanation of why this song fits this specific movement.",
+  "scripture_connection": "A brief reference to a relevant verse if applicable."
 }`;
-
-    // Call the Gemini REST API
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+// FIX 2: Gemini 2.5 API structure
+    // Ensure you are passing the inputs into the text prompt
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ parts: [{ text: `Analyze this song: ${songInput}` }] }],
+        // FIX 3: Use the variables extracted from req.json()
+        contents: [{ parts: [{ text: `Analyze this song: "${songTitle}" by ${artistName}` }] }],
         generationConfig: {
           temperature: 0.2,
-          responseMimeType: "application/json" // Forces Gemini to return clean JSON
+          responseMimeType: "application/json" 
         }
       })
     });
 
     const data = await response.json();
     
-    // Extract the JSON string from Gemini's response and parse it
+    // FIX 4: Safety check on response
+    if (!data.candidates || !data.candidates[0].content.parts[0].text) {
+       throw new Error("Gemini returned an invalid response structure");
+    }
+
     const geminiText = data.candidates[0].content.parts[0].text;
     const parsedData = JSON.parse(geminiText);
 

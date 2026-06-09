@@ -8,6 +8,8 @@ const supabase = createClient(
 );
 
 export default function LiturgyMapper() {
+
+  const [selectedMovement, setSelectedMovement] = useState(null);
   const [artistInput, setArtistInput] = useState('');
   const [songInput, setSongInput] = useState('');
   const [plotData, setPlotData] = useState(null);
@@ -111,7 +113,7 @@ export default function LiturgyMapper() {
         <div className="flex flex-col lg:flex-row gap-8 mb-12">
 
           <div className="w-full  bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <Columns />
+            <Columns selectedMovement={selectedMovement} setSelectedMovement={setSelectedMovement} />
           </div>
         </div>
 

@@ -1,8 +1,6 @@
 import { ColumnData } from '@data/ColumnData';
 
-export default function Columns() {
-
-
+export default function Columns({ selectedMovement, setSelectedMovement }) {
 
     return (
         <div className="flex gap-6 p-8 bg-slate-50 ">
