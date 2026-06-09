@@ -4,7 +4,7 @@ export const ColumnData = [
         "movement": "Gathering",
         "message": "The Awe",
         "color": "border-t-blue-300",
-        "imagePath": "/quadrants/images/praise.png",
+        "imagePath": "/worship-planning/images/praise.png",
         "imageClass": "scale-100",
         "items": ["All glory and honor to God", "External expression of awe", "Sing God's praises"],
         "narrative": [
@@ -18,7 +18,7 @@ export const ColumnData = [
         "movement": "Word",
         "message": "The Story of God",
         "color": "border-t-blue-500",
-        "imagePath": "/quadrants/images/faith.png",
+        "imagePath": "/worship-planning/images/faith.png",
         "imageClass": "scale-110 translate-y-2",
         "items": ["Anchor in the Biblical narrative", "Hear God's attributes and deeds", "Storytelling songs and hymns", "Build a theological foundation"],
         "narrative": [
@@ -32,7 +32,7 @@ export const ColumnData = [
         "movement": "Table",
         "message": "The Gospel & Sacrifice",
         "color": "border-t-blue-700",
-        "imagePath": "/quadrants/images/love.png",
+        "imagePath": "/worship-planning/images/love.png",
         "imageClass": "scale-[1.35] translate-y-4",
         "items": ["Point back to the cross", "Active response to the gospel", "Communion and the sending", "Body of Christ in action"],
         "narrative": [
@@ -46,7 +46,7 @@ export const ColumnData = [
         "movement": "Sending",
         "message": "The Confession",
         "color": "border-t-blue-900",
-        "imagePath": "/quadrants/images/hope.png",
+        "imagePath": "/worship-planning/images/hope.png",
         "imageClass": "scale-100",
         "items": ["Share the hope of Christ", "Internal reflection of brokenness", "The need for repentance", "Quiet reflective moments"],
         "narrative": [
