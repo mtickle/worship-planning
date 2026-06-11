@@ -17,34 +17,32 @@ export default function LiturgyMapper() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 1. Default center coordinates for the inner 400x400 grid
-  // let finalX = 200;
-  // let finalY = 200;
 
-  // if (plotData) {
-  //   // FORCE NUMBER CONVERSION to prevent JavaScript string bugs!
-  //   const xScore = Number(plotData.x_axis_score);
-  //   const yScore = Number(plotData.y_axis_score);
+  if (plotData) {
+    console.log(plotData)
+    //   // FORCE NUMBER CONVERSION to prevent JavaScript string bugs!
+    //   const xScore = Number(plotData.x_axis_score);
+    //   const yScore = Number(plotData.y_axis_score);
 
-  //   // 2. Calculate the raw map positions
-  //   finalX = ((xScore + 10) / 20) * 400;
-  //   finalY = 400 - ((yScore + 10) / 20) * 400;
+    //   // 2. Calculate the raw map positions
+    //   finalX = ((xScore + 10) / 20) * 400;
+    //   finalY = 400 - ((yScore + 10) / 20) * 400;
 
-  //   // 3. NO-FLY ZONE INTERCEPTION LOGIC
+    //   // 3. NO-FLY ZONE INTERCEPTION LOGIC
 
-  //   // Protect Top Labels (FAITH & PRAISE) from top-edge clipping
-  //   if (finalY < 52) finalY = 52;
+    //   // Protect Top Labels (FAITH & PRAISE) from top-edge clipping
+    //   if (finalY < 52) finalY = 52;
 
-  //   // Protect Middle Labels (HOPE & LOVE text boxes sitting right below crosshair)
-  //   if (finalY > 200 && finalY < 246) finalY = 246;
+    //   // Protect Middle Labels (HOPE & LOVE text boxes sitting right below crosshair)
+    //   if (finalY > 200 && finalY < 246) finalY = 246;
 
-  //   // NEW: Protect Bottom Edge from clipping
-  //   if (finalY > 380) finalY = 380;
+    //   // NEW: Protect Bottom Edge from clipping
+    //   if (finalY > 380) finalY = 380;
 
-  //   // Protect Left and Right Outer Edges
-  //   if (finalX < 20) finalX = 20;
-  //   if (finalX > 380) finalX = 380;
-  // }
+    //   // Protect Left and Right Outer Edges
+    //   if (finalX < 20) finalX = 20;
+    //   if (finalX > 380) finalX = 380;
+  }
 
   useEffect(() => { fetchHistory(); }, []);
 
@@ -54,22 +52,48 @@ export default function LiturgyMapper() {
   };
 
   const handleAnalyze = async () => {
-    if (!songInput.trim() || !artistInput.trim()) return; // Added validation
+    if (!songInput.trim() || !artistInput.trim()) return; // Make sure both exist
     setLoading(true);
     setError(null);
 
     try {
+      // 1. Define the payload first
+      const requestPayload = {
+        songTitle: songInput,
+        artistName: artistInput
+      };
+
+      // 2. Log it safely
+      //console.log("Sending payload:", JSON.stringify(requestPayload));
+
+      // 3. Send it to your Edge Function
       const { data: geminiData, error: funcError } = await supabase.functions.invoke('analyze-song', {
-        // Send both inputs as an object
-        body: {
-          songTitle: songInput,
-          artistName: artistInput
-        }
+        body: requestPayload
       });
 
-      if (funcError) throw new Error("Failed to analyze song.");
+      if (funcError) {
+        console.error("Raw Supabase Error:", funcError);
+
+        // Supabase sometimes buries the custom JSON error we sent from the backend
+        // Let's dig it out so we can display it in the UI!
+        let realErrorMessage = "Failed to analyze song.";
+
+        // Try to read the error we sent from our catch block in Deno
+        if (funcError.context && funcError.context.json) {
+          const backendError = await funcError.context.json();
+          realErrorMessage = backendError.error || realErrorMessage;
+        } else if (funcError.message) {
+          realErrorMessage = funcError.message;
+        }
+
+        throw new Error(`Backend Error: ${realErrorMessage}`);
+      }
+
+      // 4. Log the response to make sure Gemini sent back the JSON correctly
+      console.log("Gemini Response:", geminiData);
 
       setPlotData(geminiData);
+      setSelectedMovement(geminiData.liturgical_movement);
       fetchHistory();
     } catch (err) {
       setError(err.message);
@@ -77,7 +101,6 @@ export default function LiturgyMapper() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-slate-50 p-4 lg:p-8">
       {loading && (
@@ -98,14 +121,14 @@ export default function LiturgyMapper() {
             value={artistInput}
             onChange={(e) => setArtistInput(e.target.value)}
             placeholder="Enter Artist..."
-            className="flex-1 p-4 border rounded-xl shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 p-2 border rounded-xl shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="text"
             value={songInput}
             onChange={(e) => setSongInput(e.target.value)}
             placeholder="Enter Song Title..."
-            className="flex-1 p-4 border rounded-xl shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 p-2 border rounded-xl shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button onClick={handleAnalyze} className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700">Map Song</button>
         </div>

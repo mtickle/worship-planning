@@ -5,22 +5,33 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-serve(async (req) => {
-  // Handle CORS preflight
+serve(async (req: Request) => {
+  // Handle CORS preflight check immediately
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    // FIX 1: Extract the variables we actually sent from the frontend
     const { songTitle, artistName } = await req.json();
-    const apiKey = Deno.env.get('GEMINI_API_KEY');
+    
+    // Trim to protect against hidden whitespace in Supabase secrets
+    const apiKey = Deno.env.get('GEMINI_API_KEY')?.trim();
 
-    if (!songTitle || !artistName) {
-      throw new Error("Missing songTitle or artistName");
+    if (!apiKey) {
+      return new Response(
+        JSON.stringify({ error: "Edge function config error: GEMINI_API_KEY is not set on the Supabase server environment." }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
- const systemInstruction = `You are an expert Liturgical Analyst. I will provide a song title and artist. 
+    if (!songTitle || !artistName) {
+      return new Response(
+        JSON.stringify({ error: "Missing payload data: songTitle or artistName was blank." }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const systemInstruction = `You are an expert Liturgical Analyst. I will provide a song title and artist. 
 Your goal is to categorize it into one of four liturgical movements and explain its theological fit.
 
 CATEGORIES (The Four-Fold Model):
@@ -37,14 +48,17 @@ OUTPUT FORMAT (JSON ONLY):
   "theological_reasoning": "A 2-3 sentence explanation of why this song fits this specific movement.",
   "scripture_connection": "A brief reference to a relevant verse if applicable."
 }`;
-// FIX 2: Gemini 2.5 API structure
-    // Ensure you are passing the inputs into the text prompt
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+
+    const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+    
+    const response = await fetch(GEMINI_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey 
+      },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemInstruction }] },
-        // FIX 3: Use the variables extracted from req.json()
         contents: [{ parts: [{ text: `Analyze this song: "${songTitle}" by ${artistName}` }] }],
         generationConfig: {
           temperature: 0.2,
@@ -55,21 +69,36 @@ OUTPUT FORMAT (JSON ONLY):
 
     const data = await response.json();
     
-    // FIX 4: Safety check on response
-    if (!data.candidates || !data.candidates[0].content.parts[0].text) {
-       throw new Error("Gemini returned an invalid response structure");
+    // Graceful diagnostic checking if Gemini errors out or blocks for safety
+    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content?.parts?.[0]?.text) {
+       return new Response(
+         JSON.stringify({ error: "Google API did not return text. Check your billing dashboard or safety configurations.", raw_response: data }),
+         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+       );
     }
 
     const geminiText = data.candidates[0].content.parts[0].text;
-    const parsedData = JSON.parse(geminiText);
+    
+    // Safely parse the JSON just in case the LLM outputs malformed text
+    let parsedData;
+    try {
+      parsedData = JSON.parse(geminiText);
+    } catch (parseError) {
+      return new Response(
+        JSON.stringify({ error: "Failed to parse Gemini response as JSON.", raw_text: geminiText }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     return new Response(JSON.stringify(parsedData), {
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
+  } catch (error: any) {
+    // We return status 200 here purely to stop Supabase from swallowing our custom messages behind a generic 500 error page
+    return new Response(JSON.stringify({ error: error.message, location: "Deno Try/Catch Boundary" }), {
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
