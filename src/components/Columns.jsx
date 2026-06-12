@@ -6,20 +6,8 @@ export default function Columns({ selectedMovement, setSelectedMovement, plotDat
     return (
         // Changed to flex-col so the clear button sits neatly above the grid
         <div className="flex flex-col gap-6 p-8 bg-slate-50">
-
-            {/* --- NEW: Clear Button (Only shows when something is selected) --- */}
-            <div className="flex justify-end w-full min-h-[40px]">
-                {selectedMovement && (
-                    <button
-                        onClick={onClear}
-                        className="px-6 py-2 bg-slate-200 text-slate-700 text-sm font-bold rounded-lg hover:bg-slate-300 transition-colors"
-                    >
-                        Clear Results
-                    </button>
-                )}
-            </div>
-
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
                 {ColumnData.map((q) => {
                     // Check if this specific column is the one selected OR assigned by the AI
                     const isSelected = selectedMovement === q.name;
@@ -45,7 +33,7 @@ export default function Columns({ selectedMovement, setSelectedMovement, plotDat
                             <div className="flex-1 flex flex-col relative">
 
                                 {/* --- AI SONG CARD INJECTION --- */}
-                                {plotData && plotData.liturgical_movement === q.name && (
+                                {/* {plotData && plotData.liturgical_movement === q.name && (
                                     <div className="m-4 p-5 bg-white border-2 border-blue-400 rounded-xl shadow-lg relative overflow-hidden">
                                         <div className="absolute top-0 right-0 bg-blue-400 text-white text-[10px] font-black px-2 py-1 rounded-bl-lg">
                                             AI MAPPED
@@ -68,8 +56,7 @@ export default function Columns({ selectedMovement, setSelectedMovement, plotDat
                                             "{plotData.theological_reasoning}"
                                         </p>
                                     </div>
-                                )}
-                                {/* ----------------------------------- */}
+                                )} */}
 
                                 {/* Standard Column Text */}
                                 <div className="pt-4 pb-2 pl-4 pr-4">
@@ -99,7 +86,6 @@ export default function Columns({ selectedMovement, setSelectedMovement, plotDat
                                     className="w-full h-full object-contain object-bottom"
                                 />
                             </div>
-
                         </div>
                     );
                 })}
