@@ -43,9 +43,7 @@ export default function LiturgyMapper() {
     setError(null);
 
     try {
-
-      //--- First , make sure we haven't already processed this song.
-      //--- We use .ilike() so it ignores capitalization (e.g., "all my hope" == "All My Hope")
+      // --- 1. SMART CACHE: Check database first ---
       const { data: existingSongs, error: searchError } = await supabase
         .from('songs')
         .select('*')
@@ -55,52 +53,59 @@ export default function LiturgyMapper() {
       if (existingSongs && existingSongs.length > 0) {
         console.log("Song found in database! Skipping AI...");
         const savedSong = existingSongs[0];
-
         setPlotData(savedSong);
         setSelectedMovement(savedSong.liturgical_movement);
         setLoading(false);
-        return; //--- EXIT EARLY! We don't need to do anything else.
+        return; // EXIT EARLY
       }
 
-
-      //--- If the song is not found, do the AI thing.
-      console.log("Song not found. Asking Gemini...");
+      // --- 2. API CALLS: Fire both functions concurrently ---
+      console.log("Song not found. Asking Gemini for Liturgy and Audit...");
       const requestPayload = {
         songTitle: songInput.trim(),
         artistName: artistInput.trim()
       };
 
-      const { data: geminiData, error: funcError } = await supabase.functions.invoke('analyze-song', {
-        body: requestPayload
-      });
+      // Promise A: Primary Project (Liturgy Mapping)
+      const liturgyPromise = supabase.functions.invoke('analyze-song', { body: requestPayload });
 
-      if (funcError) {
-        let realErrorMessage = "Failed to analyze song.";
-        if (funcError.context && funcError.context.json) {
-          const backendError = await funcError.context.json();
-          realErrorMessage = backendError.error || realErrorMessage;
-        } else if (funcError.message) {
-          realErrorMessage = funcError.message;
-        }
-        throw new Error(`Backend Error: ${realErrorMessage}`);
-      }
+      // Promise B: Secondary Project (NAR Audit) via standard fetch
+      const auditPromise = fetch('https://onfxhkahjmormykrxram.supabase.co/functions/v1/naras-audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestPayload)
+      }).then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+        return { data: await res.json(), error: null };
+      }).catch(error => ({ data: null, error }));
 
-      //--- Save the song to the database.
-      const { error: dbError } = await supabase
-        .from('songs')
-        .insert([{
-          song_title: geminiData.song_title,
-          artist: geminiData.artist,
-          liturgical_movement: geminiData.liturgical_movement,
-          theological_reasoning: geminiData.theological_reasoning,
-          scripture_connection: geminiData.scripture_connection
-        }]);
+      // Wait for both to finish
+      const [liturgyResponse, auditResponse] = await Promise.all([liturgyPromise, auditPromise]);
 
+      // Error Handling
+      if (liturgyResponse.error) throw new Error(`Liturgy Error: ${liturgyResponse.error.message}`);
+      if (auditResponse.error) throw new Error(`Audit Error: ${auditResponse.error.message}`);
+
+      const geminiData = liturgyResponse.data;
+      const auditData = auditResponse.data;
+
+      // --- 3. DATABASE SAVE ---
+      const newSongRecord = {
+        song_title: geminiData.song_title,
+        artist: geminiData.artist,
+        liturgical_movement: geminiData.liturgical_movement,
+        theological_reasoning: geminiData.theological_reasoning,
+        scripture_connection: geminiData.scripture_connection,
+        nar_verdict: auditData.verdict,
+        nar_summary: auditData.summary
+      };
+
+      const { error: dbError } = await supabase.from('songs').insert([newSongRecord]);
       if (dbError) console.error("Failed to save to history:", dbError);
 
-      //--- Update UI with the fresh data
-      setPlotData(geminiData);
-      setSelectedMovement(geminiData.liturgical_movement);
+      // --- 4. UPDATE UI ---
+      setPlotData(newSongRecord);
+      setSelectedMovement(newSongRecord.liturgical_movement);
       fetchHistory();
 
     } catch (err) {
@@ -129,6 +134,7 @@ export default function LiturgyMapper() {
           <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm w-full mx-4">
             <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
             <h2 className="text-xl font-bold text-slate-800">Analyzing Liturgy...</h2>
+            <p className="text-sm text-slate-500">Processing AI request for both a liturgical response and NAR audit. This may take a moment.</p>
           </div>
         </div>
       )}
